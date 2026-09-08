@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 280" width="1400" height="280">
+  <defs>
+    <linearGradient id="logoGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF5CC" />
+      <stop offset="35%" stop-color="#FFD700" />
+      <stop offset="70%" stop-color="#FFA800" />
+      <stop offset="100%" stop-color="#E67300" />
+    </linearGradient>
+  </defs>
+  <text x="700" y="200" font-family="Impact, Arial Black, sans-serif" font-size="140" font-weight="bold" fill="url(#logoGold)" text-anchor="middle" letter-spacing="4">SHRADDHANJALI'26</text>
+</svg>
