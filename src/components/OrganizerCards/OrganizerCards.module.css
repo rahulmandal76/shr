@@ -1,0 +1,263 @@
+.section {
+    padding: 7rem 0;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.header {
+    margin-bottom: 4.5rem;
+    padding: 0 5%;
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #FFD700, #FF9933);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.title {
+    font-family: 'Yatra One', cursive, serif;
+    font-size: 4.5rem;
+    font-weight: 400;
+    color: #F8F1E4;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+.divider {
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #FFD700, #FF9933);
+    border-radius: 2px;
+    margin: 0 auto;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
+}
+
+/* =============================================
+   CAROUSEL CONTAINER & INFINITE SLIDING TRACK
+   ============================================= */
+.carouselContainer {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 2.5rem 0 3.5rem;
+    /* Elegant edge gradient mask for seamless entrance and exit */
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.track {
+    display: flex;
+    gap: 2.5rem;
+    width: max-content;
+    animation: slideRightToLeft 32s linear infinite;
+    will-change: transform;
+    padding: 0 1.5rem;
+}
+
+.carouselContainer:hover .track {
+    animation-play-state: paused;
+}
+
+@keyframes slideRightToLeft {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* =============================================
+   CLUB CARDS
+   ============================================= */
+.card {
+    background: rgba(45, 4, 10, 0.55);
+    border: 1px solid rgba(255, 215, 0, 0.22);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 22px;
+    padding: 3rem 2.2rem 2.5rem;
+    width: 230px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.8rem;
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.35s ease,
+        border-color 0.35s ease,
+        background 0.35s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 16px 40px rgba(255, 153, 51, 0.25),
+        0 0 20px rgba(255, 215, 0, 0.3);
+    border-color: rgba(255, 215, 0, 0.55);
+    background: rgba(60, 6, 14, 0.7);
+}
+
+.imgWrap {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.35);
+    box-shadow: 0 0 18px rgba(255, 215, 0, 0.25);
+    transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+.card:hover .imgWrap {
+    box-shadow: 0 0 28px rgba(255, 215, 0, 0.6);
+    transform: scale(1.05);
+}
+
+.logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.name {
+    font-size: 1.45rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: rgba(248, 241, 228, 0.92);
+    text-align: center;
+    line-height: 1.45;
+    letter-spacing: 0.3px;
+    min-height: 4.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.moreIcon {
+    font-size: 2.5rem;
+    color: #2A0000;
+    background: linear-gradient(135deg, #FF9933, #FFD700);
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 0 18px rgba(255, 215, 0, 0.5);
+    font-weight: 700;
+    transition: transform 0.35s ease;
+}
+
+.moreCard:hover .moreIcon {
+    transform: rotate(90deg) scale(1.08);
+}
+
+.moreCard {
+    text-decoration: none;
+}
+
+.moreTitle {
+    background: linear-gradient(90deg, #FFD700, #FF9933);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* =============================================
+   RESPONSIVE DESIGN
+   ============================================= */
+@media screen and (max-width: 768px) {
+    .section {
+        padding: 5rem 0;
+    }
+
+    .title {
+        font-size: 3.2rem;
+    }
+
+    .carouselContainer {
+        padding: 1.5rem 0 2.5rem;
+        mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    }
+
+    .track {
+        gap: 1.6rem;
+        animation-duration: 24s;
+    }
+
+    .card {
+        width: 180px;
+        padding: 2rem 1.4rem 1.8rem;
+        gap: 1.2rem;
+        border-radius: 18px;
+    }
+
+    .imgWrap {
+        width: 85px;
+        height: 85px;
+    }
+
+    .name {
+        font-size: 1.2rem;
+        min-height: 3.6rem;
+    }
+
+    .moreIcon {
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .title {
+        font-size: 2.8rem;
+    }
+
+    .card {
+        width: 160px;
+        padding: 1.8rem 1.2rem 1.5rem;
+    }
+
+    .imgWrap {
+        width: 75px;
+        height: 75px;
+    }
+
+    .name {
+        font-size: 1.1rem;
+    }
+}
+
+/* =============================================
+   REDUCED MOTION
+   ============================================= */
+@media (prefers-reduced-motion: reduce) {
+    .track {
+        animation: none !important;
+        overflow-x: auto;
+        width: 100%;
+        justify-content: flex-start;
+        padding: 1rem 5%;
+    }
+}

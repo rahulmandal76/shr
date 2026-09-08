@@ -1,0 +1,403 @@
+import React, { useState } from 'react';
+import FormContainer from './FormContainer';
+import InputField from './InputField';
+import SelectField from './SelectField';
+import EventSelectionSection from './EventSelectionSection';
+import PaymentSection from './PaymentSection';
+import ImageUpload from './ImageUpload';
+import SuccessTicket from './SuccessTicket';
+import classes from './Register.module.css';
+
+// Apps Script Web App URL
+// TODO: Replace with your actual deployed Web App URL
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzpGW-IZQN2WRG1aTYau1UEaK4NMftyl9xStrn2TEY_LE1XhaCUEsnj-IOtKHj5_uXL9w/exec";
+
+import { eventsData } from '../../assets/eventsData';
+
+const eventsListData = eventsData
+  .filter(event => event.id !== 1) // Optional: exclude Cipher Premier League parent if you only register for sub-events, or just let all 19
+  .map(event => {
+    const isTeam = typeof event.team === 'string' && event.team.toLowerCase().includes('team');
+
+    // Fallback/standard maxTeamSize rules since they aren't directly in eventsData yet
+    let maxTeamSize = 1;
+    if (isTeam) {
+      if (event.id === 3) maxTeamSize = 4; // Musi-Mania
+      else if (event.id === 4) maxTeamSize = 3; // Alpana
+      else if (event.id === 7) maxTeamSize = 2; // Confero
+      else if (event.id === 8) maxTeamSize = 5; // Campus Combat League
+      else if (event.id === 9) maxTeamSize = 8; // Gyration
+      else if (event.id === 10) maxTeamSize = 10; // Don-De-Mode
+      else if (event.id === 11) maxTeamSize = 5; // Aqua Thrust
+      else maxTeamSize = 4; // Default team size
+    }
+
+    // Extract numerical price from the string
+    let price = 0;
+    if (event.fees) {
+      const match = event.fees.match(/\d+/);
+      if (match) price = parseInt(match[0], 10);
+    }
+
+    return {
+      id: event.id.toString(),
+      name: event.name + (event.id <= 9 && event.description && event.description.length < 30 ? ` (${event.description})` : ''),
+      price: price === 0 ? 0 : price, // 0 for Free
+      isTeam: isTeam,
+      maxTeamSize: maxTeamSize
+    };
+  });
+
+const Register = () => {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    mobile: '',
+    college: '',
+    year: '',
+    branch: ''
+  });
+
+  const [selectedEvents, setSelectedEvents] = useState([]);
+  const [teamMembers, setTeamMembers] = useState({});
+  const [screenshotFile, setScreenshotFile] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [eventError, setEventError] = useState('');
+  const [submitError, setSubmitError] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [registrationData, setRegistrationData] = useState(null);
+
+  const validate = (data) => {
+    let newErrors = {};
+
+    if (!data.fullName.trim()) newErrors.fullName = 'Full Name is required';
+
+    if (!data.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+      newErrors.email = 'Email address is invalid';
+    }
+
+    if (!data.mobile.trim()) {
+      newErrors.mobile = 'Mobile Number is required';
+    } else if (!/^\d{10}$/.test(data.mobile)) {
+      newErrors.mobile = 'Mobile Number must be exactly 10 digits';
+    }
+
+    if (!data.college.trim()) newErrors.college = 'College Name is required';
+    if (!data.year.trim()) newErrors.year = 'Year is required';
+    if (!data.branch.trim()) newErrors.branch = 'Branch is required';
+
+    if (!screenshotFile) newErrors.screenshot = 'Payment screenshot is required';
+
+    return newErrors;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    // For mobile, only allow digits
+    if (name === 'mobile' && value !== '' && !/^\d+$/.test(value)) {
+      return;
+    }
+    if (name === 'mobile' && value.length > 10) {
+      return;
+    }
+
+    setFormData(prev => ({ ...prev, [name]: value }));
+
+    // Clear error
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const handleToggleEvent = (eventId) => {
+    setSelectedEvents(prev => {
+      if (prev.includes(eventId)) {
+        // Remove from selected and clear team members
+        setTeamMembers(prevMembers => {
+          const newMembers = { ...prevMembers };
+          delete newMembers[eventId];
+          return newMembers;
+        });
+        return prev.filter(id => id !== eventId);
+      } else {
+        const newSelection = [...prev, eventId];
+        if (newSelection.length > 0) setEventError('');
+
+        // Initialize team members to an empty array (just the primary registrant)
+        setTeamMembers(prevMembers => ({
+          ...prevMembers,
+          [eventId]: []
+        }));
+
+        return newSelection;
+      }
+    });
+  };
+
+  const handleTeamMembersChange = (eventId, membersList) => {
+    setTeamMembers(prev => ({
+      ...prev,
+      [eventId]: membersList
+    }));
+  };
+
+  const handleFileSelect = (file) => {
+    setScreenshotFile(file);
+    if (file && errors.screenshot) {
+      setErrors(prev => ({ ...prev, screenshot: '' }));
+    }
+  };
+
+  const totalAmount = selectedEvents.reduce((total, eventId) => {
+    const event = eventsListData.find(e => e.id === eventId);
+    if (!event) return total;
+    const size = 1 + (teamMembers[eventId]?.length || 0);
+    return total + (event.price * size);
+  }, 0);
+
+  const generateRegId = () => {
+    return 'EX26-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitError('');
+
+    const validationErrors = validate(formData);
+
+    if (selectedEvents.length === 0) {
+      setEventError('Please select at least one event to participate.');
+    }
+
+    if (Object.keys(validationErrors).length > 0 || selectedEvents.length === 0) {
+      setErrors(validationErrors);
+      // scroll to top to show errors if needed
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // 1. Prepare FormData
+      const data = new FormData();
+      data.append("fullName", formData.fullName);
+      data.append("email", formData.email);
+      data.append("mobile", formData.mobile);
+      data.append("college", formData.college);
+      data.append("year", formData.year);
+      data.append("branch", formData.branch);
+
+      const eventNames = selectedEvents.map(id => eventsListData.find(e => e.id === id)?.name);
+      data.append("selectedEvents", JSON.stringify(eventNames));
+
+      // Map IDs to Names for the Apps Script so it can reliably match members to specific sheets
+      const teamMembersByName = {};
+      Object.keys(teamMembers).forEach(id => {
+        const eventName = eventsListData.find(e => e.id === id)?.name;
+        if (eventName && teamMembers[id].length > 0) {
+          teamMembersByName[eventName] = teamMembers[id];
+        }
+      });
+      data.append("teamMembers", JSON.stringify(teamMembersByName)); // Pass arrays of names to Apps Script
+
+      data.append("totalAmount", totalAmount);
+
+      if (screenshotFile) {
+        // Convert file to base64 for Apps Script
+        const convertToBase64 = (file) => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+          });
+        };
+
+        const base64String = await convertToBase64(screenshotFile);
+        data.append("screenshotBase64", base64String);
+        data.append("screenshotMimeType", screenshotFile.type);
+        data.append("screenshotName", screenshotFile.name);
+      } else {
+        throw new Error("Screenshot file is missing.");
+      }
+
+      // 2. Submit to Apps Script
+      console.log("Submitting registration to Google Apps Script...");
+
+      const response = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        body: data
+      });
+
+      const result = await response.json();
+
+      if (result.status === "success") {
+        console.log("Submission successful!", result);
+
+        // 3. Complete and show ticket
+        const registrationPayload = {
+          fullName: formData.fullName,
+          selectedEvents: eventNames,
+          totalAmount: totalAmount,
+          registrationId: result.registrationId
+        };
+
+        setRegistrationData(registrationPayload);
+        setIsSubmitted(true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        throw new Error(result.message || "Failed to process registration.");
+      }
+
+    } catch (error) {
+      console.error("Error submitting registration:", error);
+      alert(`Submission Error: ${error.message}\n\nPlease check your console (F12) for more details.`);
+      setSubmitError(error.message || "Failed to submit registration. Please try again.");
+    } finally {
+      console.log("Clearing processing state...");
+      setIsSubmitting(false);
+    }
+  };
+
+  // Conditions
+  const isFormValid = formData.fullName && formData.email && formData.mobile.length === 10 && formData.college && formData.year && formData.branch;
+  const canProceed = isFormValid && selectedEvents.length > 0 && screenshotFile !== null;
+
+  const yearOptions = [
+    { value: '1st Year', label: '1st Year' },
+    { value: '2nd Year', label: '2nd Year' },
+    { value: '3rd Year', label: '3rd Year' },
+    { value: '4th Year', label: '4th Year' },
+  ];
+
+  if (isSubmitted && registrationData) {
+    return (
+      <FormContainer>
+        <SuccessTicket data={registrationData} />
+      </FormContainer>
+    );
+  }
+
+  return (
+    <FormContainer title="Register for Shraddhanjali 2026">
+      <form onSubmit={handleSubmit} className={classes.form}>
+
+        <div className={classes.row}>
+          <InputField
+            label="Full Name"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            error={errors.fullName}
+            placeholder="John Doe"
+            required
+          />
+
+          <InputField
+            label="Email Address"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            error={errors.email}
+            placeholder="john@example.com"
+            required
+          />
+        </div>
+
+        <InputField
+          label="Mobile Number"
+          type="tel"
+          name="mobile"
+          value={formData.mobile}
+          onChange={handleChange}
+          error={errors.mobile}
+          placeholder="9876543210"
+          required
+        />
+
+        <InputField
+          label="College Name"
+          name="college"
+          value={formData.college}
+          onChange={handleChange}
+          error={errors.college}
+          placeholder="National Institute of Technology"
+          required
+        />
+
+        <div className={classes.row}>
+          <SelectField
+            label="Year"
+            name="year"
+            value={formData.year}
+            onChange={handleChange}
+            error={errors.year}
+            options={yearOptions}
+            required
+          />
+
+          <InputField
+            label="Branch"
+            name="branch"
+            value={formData.branch}
+            onChange={handleChange}
+            error={errors.branch}
+            placeholder="Computer Science"
+            required
+          />
+        </div>
+
+        {/* Phase 2: Event Selection Section */}
+        <div className={classes.divider}></div>
+
+        <EventSelectionSection
+          eventsList={eventsListData}
+          selectedEvents={selectedEvents}
+          onToggleEvent={handleToggleEvent}
+          teamMembers={teamMembers}
+          onTeamMembersChange={handleTeamMembersChange}
+        />
+
+        {eventError && <div className={classes.eventErrorMessage}>{eventError}</div>}
+
+        {/* Phase 3: Payment Section & Upload */}
+        {selectedEvents.length > 0 && (
+          <>
+            <div className={classes.divider}></div>
+            <PaymentSection totalAmount={totalAmount} />
+            <ImageUpload
+              onFileSelect={handleFileSelect}
+              file={screenshotFile}
+              error={errors.screenshot}
+            />
+          </>
+        )}
+
+        {submitError && <div className={classes.eventErrorMessage}>{submitError}</div>}
+
+        {/* Submit Action */}
+        <button
+          type="submit"
+          className={`${classes.submitButton} ${!canProceed || isSubmitting ? classes.disabledBtn : ''}`}
+          disabled={!canProceed || isSubmitting}
+        >
+          {isSubmitting ? (
+            <span className={classes.spinnerContainer}>
+              <span className={classes.spinner}></span> Processing...
+            </span>
+          ) : (
+            <>Complete Registration <span className={classes.arrow}>&rarr;</span></>
+          )}
+        </button>
+      </form>
+    </FormContainer>
+  );
+};
+
+export default Register;

@@ -1,0 +1,199 @@
+/* Black & White styling optimized for crisp PDF extraction */
+.printableContainer {
+    width: 800px;
+    background-color: #ffffff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    /* Ensure the container sizes to fit its children */
+    height: max-content;
+}
+
+.subTicket {
+    background-color: #ffffff;
+    border: 3px solid #000000;
+    border-radius: 12px;
+    padding: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    page-break-inside: avoid;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: #000000;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Add a decorative cut-out effect on the sides */
+.subTicket::before,
+.subTicket::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background-color: #ffffff;
+    /* Match container bg */
+    border: 3px solid #000000;
+    border-radius: 50%;
+}
+
+.subTicket::before {
+    left: -15px;
+}
+
+.subTicket::after {
+    right: -15px;
+}
+
+.ticketHeader {
+    text-align: center;
+    border-bottom: 2px dashed #000000;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.festName {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin: 0 0 5px 0;
+    text-transform: uppercase;
+}
+
+.festDates {
+    font-size: 16px;
+    color: #333333;
+    margin: 0;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.ticketBody {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 20px;
+}
+
+.eventName {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    text-align: center;
+    border: 2px solid #000000;
+    padding: 10px;
+    background-color: #f2f2f2;
+}
+
+.eventDetails {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.eventDetails p {
+    margin: 0;
+}
+
+.divider {
+    height: 1px;
+    background-color: #cccccc;
+    margin: 10px 0;
+}
+
+.participantDetails {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.detailRow {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.label {
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #555555;
+    letter-spacing: 0.5px;
+}
+
+.value {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.valueId {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: monospace;
+    background-color: #000000;
+    color: #ffffff;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.valueUtr {
+    font-size: 14px;
+    font-weight: 700;
+    font-family: monospace;
+    color: #000000;
+    margin-top: 2px;
+}
+
+.teamSection {
+    margin-top: 5px;
+}
+
+.teamList {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 8px;
+    padding-left: 5px;
+}
+
+.teamMemberItem {
+    font-size: 16px;
+    color: #333333;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.memberDot {
+    font-size: 18px;
+    color: #000000;
+    font-weight: bold;
+}
+
+.ticketFooter {
+    margin-top: 40px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 2px dashed #000000;
+}
+
+.barcodeFake {
+    font-family: monospace;
+    font-size: 36px;
+    letter-spacing: -2px;
+    font-weight: bold;
+    transform: scaleY(1.5);
+    display: inline-block;
+    color: #000000;
+}
+
+.passText {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    margin-top: 15px;
+    margin-bottom: 0;
+}

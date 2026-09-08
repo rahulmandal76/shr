@@ -1,0 +1,404 @@
+.singleEvent {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 9999;
+  background: rgba(10, 15, 30, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.singleEventCard {
+  width: 100%;
+  max-width: 900px;
+  background: rgba(15, 15, 20, 0.75);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  position: relative;
+  animation: modalFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.gyrationSelect {
+  width: 100%;
+  padding: 10px 35px 10px 14px;
+  /* Right padding for the arrow */
+  background-color: rgba(255, 255, 255, 0.05);
+  /* Slight tint to make it look like a box */
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1.4rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* Add explicit SVG arrow */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  /* Positioned nicely on the right */
+  background-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.gyrationSelect:hover,
+.gyrationSelect:focus {
+  border-color: #FFD700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.gyrationSelect option {
+  background: #1e1e24;
+  /* Match card background approximation */
+  color: #fff;
+  font-size: 1.3rem;
+  padding: 10px;
+}
+
+.closeBtn {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.6rem;
+  cursor: pointer;
+  z-index: 10005;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.closeBtn:hover {
+  background: rgba(255, 153, 51, 0.8);
+  border-color: #FFD700;
+  transform: rotate(90deg) scale(1.15);
+  box-shadow: 0 10px 25px rgba(255, 215, 0, 0.6);
+}
+
+.col1 {
+  width: 40%;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.posterWrapper {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.eventPoster {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.rulebookBtnContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.downloadBtn {
+  background: linear-gradient(90deg, #FFD700, #FF9933);
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+  max-width: 250px;
+  cursor: pointer;
+}
+
+.downloadBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 153, 51, 0.5);
+}
+
+.col2 {
+  width: 60%;
+  padding: 40px;
+  color: #fff;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.col2::-webkit-scrollbar {
+  width: 6px;
+}
+
+.col2::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.col2::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.eventHeading {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+  color: #fff;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  padding-right: 40px;
+  /* space for absolute close button */
+}
+
+.rowcol {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.rowcol>div {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.sectionWrap {
+  margin-bottom: 25px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 15px 20px;
+  border-radius: 10px;
+  border-left: 3px solid #FFD700;
+}
+
+.sectionWrap:nth-child(even) {
+  border-left-color: #FF9933;
+}
+
+.heading,
+.headingp {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #FFD700, #FF9933);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.content {
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.5px;
+}
+
+.descContent {
+  font-size: 1.8rem;
+  line-height: 1.8;
+  color: #fff;
+  letter-spacing: 0.8px;
+  font-weight: 500;
+}
+
+.list {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.list li {
+  margin-bottom: 5px;
+}
+
+.actionFooter {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+}
+
+.addToCartBtn {
+  background: linear-gradient(90deg, #FFD700, #FF9933);
+  color: #fff;
+  border: none;
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 12px 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.addToCartBtn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 153, 51, 0.5);
+}
+
+.inCartBtn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #a0a0a0;
+  cursor: not-allowed;
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.registerBtn {
+  background: linear-gradient(90deg, #FF9933, #FFD700);
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 12px 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.registerBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 153, 51, 0.5);
+}
+
+.cartIcon {
+  font-size: 1.8rem;
+}
+
+.soon {
+  color: #FFD700;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.backBtn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  background: linear-gradient(90deg, #FFD700, #FF9933);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+  .singleEvent {
+    padding: 0;
+  }
+
+  .singleEventCard {
+    flex-direction: column;
+    max-height: 100vh;
+    height: 100vh;
+    border-radius: 0;
+    width: 100%;
+    overflow-y: auto;
+  }
+
+  .closeBtn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.4rem;
+    background: rgba(15, 15, 20, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 10001;
+  }
+
+  .col1 {
+    width: 100%;
+    padding: 60px 20px 20px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .posterWrapper {
+    max-width: 250px;
+  }
+
+  .col2 {
+    width: 100%;
+    padding: 25px 20px;
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .eventHeading {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  .rowcol {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .rowcol>div {
+    margin-bottom: 20px;
+  }
+}

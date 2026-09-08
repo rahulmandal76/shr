@@ -1,0 +1,134 @@
+.events_section {
+  padding: 100px 50px;
+  width: 100%;
+}
+
+.heading {
+  text-align: center;
+  font-family: 'Yatra One', display;
+  font-size: 8vw;
+  font-weight: 400;
+  color: #FFD700;
+  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
+  margin-bottom: 1rem;
+}
+
+.subheading {
+  text-align: center;
+  font-size: 1.8rem;
+  color: rgba(248, 241, 228, 0.7);
+  margin-top: 10px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 1px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.two_events_container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 50px;
+  flex-wrap: wrap;
+}
+
+.poster_link {
+  display: block;
+  text-decoration: none;
+}
+
+/* 3D tilt card — perspective set on the card, transform applied inline via JS */
+.poster_card {
+  background: rgba(90, 10, 10, 0.5);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 16px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.poster_card:hover {
+  box-shadow: 0 20px 50px rgba(255, 153, 51, 0.25), 0 0 0 1px rgba(255, 215, 0, 0.4);
+  border-color: rgba(255, 215, 0, 0.5);
+}
+
+.poster_img_wrapper {
+  width: 300px;
+  height: 450px;
+  overflow: hidden;
+  border-radius: 10px;
+  position: relative;
+}
+
+/* Hover overlay gradient that intensifies */
+.poster_img_wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(42, 0, 0, 0.7) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  border-radius: 10px;
+}
+
+.poster_card:hover .poster_img_wrapper::after {
+  opacity: 1;
+}
+
+.poster_img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.poster_card:hover .poster_img {
+  transform: scale(1.07);
+}
+
+.poster_event_name {
+  font-family: 'Inter', sans-serif;
+  color: #F8F1E4;
+  font-size: 1.6rem;
+  margin-top: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+@media screen and (max-width: 768px) {
+  .events_section {
+    padding: 60px 20px;
+  }
+
+  .heading {
+    font-size: 10vw;
+  }
+
+  .two_events_container {
+    gap: 20px;
+  }
+
+  .poster_img_wrapper {
+    width: 240px;
+    height: 360px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .two_events_container {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .poster_img_wrapper {
+    width: 280px;
+    height: 420px;
+  }
+}

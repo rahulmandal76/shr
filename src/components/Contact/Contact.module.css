@@ -1,0 +1,270 @@
+.contact {
+  height: 100%;
+  padding: 3rem 1.5rem;
+}
+
+.contactBox {
+  width: 100%;
+  display: flex;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.432);
+  padding: 5rem 5rem;
+  border-radius: 15px;
+  display: block;
+}
+
+.headingBox {
+  width: 100%;
+  text-align: center;
+  position: relative;
+  padding-bottom: 4rem;
+}
+
+.heading {
+  color: #fff;
+  font-size: 4rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.heading::after {
+  content: "";
+  display: block;
+  margin: 0 auto;
+  width: 160px;
+  height: 4px;
+  text-align: center;
+  background-image: linear-gradient(90deg, #FFD700 2.27%, #FF9933 97.67%);
+}
+
+.contentBox {
+  display: flex;
+  gap: 4rem;
+}
+
+.persons {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.personBox {
+  background: linear-gradient(180deg,
+      rgba(255, 153, 51, 0.8) 0%,
+      rgba(255, 215, 0, 0.5) 100%);
+  color: #2A0000;
+  height: auto;
+  padding: 1.2rem 3rem;
+  border-radius: 8px;
+}
+
+.personBox:not(:last-child) {
+  margin-bottom: 5rem;
+}
+
+.personHeading {
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.details>p {
+  display: inline;
+  font-size: 2rem;
+  margin-right: 3rem;
+  font-weight: 500;
+}
+
+.anchor {
+  text-decoration: none;
+  color: #fff;
+  font-size: 2.4rem;
+  font-weight: 600;
+}
+
+.mapBox {
+  align-self: center;
+  width: 100%;
+  height: 40rem;
+  background: #000;
+
+  border-radius: 4px;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+
+  border-radius: 4px;
+}
+
+@media screen and (max-width: 768px) {
+  .heading::after {
+    width: 100px;
+  }
+
+  .contentBox {
+    flex-direction: column;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .persons {
+    align-items: center;
+  }
+}
+
+.leadsSection {
+  margin-top: 6rem;
+  width: 100%;
+}
+
+.categorySection {
+  margin-bottom: 5rem;
+}
+
+.categoryHeading {
+  color: #FF9933;
+  font-size: 2.8rem;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 2.5rem;
+  text-transform: uppercase;
+}
+
+.combinedTertiarySection .categoryHeading {
+  font-size: 2rem;
+  letter-spacing: 1px;
+  margin-bottom: 2rem;
+}
+
+.leadsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.leadsGridSecondary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.leadsGridTertiary {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.combinedTertiarySection {
+  display: flex;
+  justify-content: center;
+  gap: 8rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.leadCard {
+  background: rgba(15, 18, 30, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.leadCard:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 215, 0, 0.5);
+  box-shadow: 0 15px 35px rgba(255, 153, 51, 0.2), 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.imgContainer {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  padding: 5px;
+  background: linear-gradient(135deg, #FFD700, #FF9933);
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 24px rgba(255, 215, 0, 0.3);
+}
+
+.leadImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #1a1a24;
+}
+
+.leadName {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.6rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.leadDesignation {
+  font-size: 1.5rem;
+  color: #FFD700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+.leadPhone {
+  font-size: 1.7rem;
+  color: #FF9933;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.leadPhone:hover {
+  color: #FFD700;
+}
+
+@media screen and (max-width: 1024px) {
+  .leadsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 600px) {
+
+  .leadsGrid,
+  .leadsGridSecondary,
+  .leadsGridTertiary {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .combinedTertiarySection {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .categoryHeading {
+    font-size: 2.2rem;
+  }
+}
